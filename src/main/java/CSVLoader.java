@@ -16,9 +16,9 @@ public class CSVLoader {
 
 
     public CSVLoader(){
-        parseFile("src\\main\\resources\\data.csv", 1);
-        parseFile("src\\main\\resources\\train.csv", 2);
-        parseFile("src\\main\\resources\\task.csv", 0);
+        parseFile(getClass().getResource("data.csv").getPath(), 1);
+        parseFile(getClass().getResource("train.csv").getPath(), 2);
+        parseFile(getClass().getResource("task.csv").getPath(), 0);
     }
 
     private void parseFile(String fileName, int type) {
