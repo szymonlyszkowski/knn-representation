@@ -27,4 +27,7 @@ public class FeatureVector {
         return featuresArray;
     }
 
+    public double[] getFeatureVectorNormalized() {
+        return featureVectorNormalized;
+    }
 }
