@@ -4,7 +4,10 @@ import knn.VectorSimilarity;
 import model.Movie;
 import model.Rate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Aga on 2016-05-18.
@@ -16,7 +19,8 @@ public class Main {
     List<Rate> taskList;
 
     public static void main(String []args){
-        new Main().runApp();
+        new Main().createSolution();
+
 
     }
 
@@ -48,6 +52,28 @@ public class Main {
             moviesKeyId.put(movie.getId(),movie);
         }
         return moviesKeyId;
+    }
+
+    public void createSolution(){
+        CSVLoader csvLoader = new CSVLoader();
+        movieList = csvLoader.getMovieModel();
+        trainingList = csvLoader.getRateTrainModel();
+        taskList = csvLoader.getRateModel();
+
+        Map<Integer, Movie> moviesMap = getMoviesMap(movieList);
+
+        for(Rate rate: taskList){
+            Map<Integer, Movie> moviesRatedByGivenUser = getMoviesRatedByGivenUser(rate.getAccountId(), trainingList,
+                    moviesMap);
+            ArrayList<Movie> moviesRatedByUser = new ArrayList<Movie>(moviesRatedByGivenUser.values());
+            List<FeatureVector> featureVectorSet = createFeatureVectorSet(moviesRatedByUser);
+            VectorSimilarity vectorSimilarity = new VectorSimilarity(featureVectorSet);
+            final List<FeatureVector> neighbours = vectorSimilarity
+                    .returnFeatureVectorsUsedByKNN(5, new FeatureVector(moviesMap.get(rate.getMovieId()).getFeatureData()));
+            Double predictedValue = new UserPredictor(neighbours).predictRate();
+        }
+
+
     }
 
     public void runApp(){
