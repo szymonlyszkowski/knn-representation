@@ -41,4 +41,8 @@ public class FeatureVector {
     public double[] getFeatureVectorNormalized() {
         return featureVectorNormalized;
     }
+
+    public int getUserRating() {
+        return userRating;
+    }
 }

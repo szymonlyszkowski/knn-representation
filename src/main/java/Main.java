@@ -1,4 +1,5 @@
 import knn.FeatureVector;
+import knn.UserPredictor;
 import knn.VectorSimilarity;
 import model.Movie;
 import model.Rate;
@@ -41,15 +42,6 @@ public class Main {
         return userRatedMovies;
     }
 
-//    private ImmutablePair<Integer, Movie> extractUserMovie(List<Movie> movies, Map<Integer, Movie> userRatedMovies, Rate rate) {
-//        for (Movie movie : movies) {
-//            if (movie.getId() == rate.getMovieId()) {
-//                return new ImmutablePair<Integer,Movie>(movie.getId(), movie);
-//            }
-//        }
-//        throw new RuntimeException("No movies found in collection of all movies!");
-//    }
-
     private Map getMoviesMap(List<Movie> movies){
         HashMap<Integer, Movie> moviesKeyId = new HashMap<Integer, Movie>();
         for(Movie movie: movies){
@@ -75,7 +67,7 @@ public class Main {
 
         final List<FeatureVector> neighbours = vectorSimilarity
                 .returnFeatureVectorsUsedByKNN(5, new FeatureVector(moviesMap.get(3078).getFeatureData()));
-
+        Double predictedValue = new UserPredictor(neighbours).predictRate();
         System.out.println(movieList.size() + " ; " + trainingList.size() +  " ; " + taskList.size());
 
     }
