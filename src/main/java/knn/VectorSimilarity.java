@@ -1,13 +1,12 @@
 package knn;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by lyszkows on 21/05/16.
- */
 public class VectorSimilarity {
 
     private List<FeatureVector> featureVectors;
@@ -16,7 +15,17 @@ public class VectorSimilarity {
        featureVectors = featuresGiven;
     }
 
-    public List<Double> calculateDistancesOfNeighbours(FeatureVector vector){
+    public List<FeatureVector>returnFeatureVectorsUsedByKNN(Integer kParameter, FeatureVector vectorToBeCompared){
+        List<Double> distances = calculateDistancesOfNeighbours(vectorToBeCompared);
+        List<Pair<Double, Integer>> distancesIndices = getClosestFeatureVectors(kParameter, distances);
+        List<FeatureVector> vectors = new ArrayList();
+        for(Pair<Double,Integer> pair: distancesIndices){
+            vectors.add(featureVectors.get(pair.getRight()));
+        }
+        return vectors;
+    }
+
+    private List<Double> calculateDistancesOfNeighbours(FeatureVector vector){
         List<Double> distances = new ArrayList();
         for(FeatureVector vectorGiven: featureVectors){
             distances.add(calculateSimilarity(vectorGiven,vector));
@@ -24,9 +33,15 @@ public class VectorSimilarity {
         return distances;
     }
 
-    public List<FeatureVectorMovieTuple>
+    private List<Pair<Double,Integer>> getClosestFeatureVectors(Integer kParameter, List<Double> distances){
+        Collections.sort(distances);
+        List<Pair<Double,Integer>>distancesIndices = new ArrayList<Pair<Double,Integer>>();
+        for(Double distance: distances){
+          distancesIndices.add(new ImmutablePair<Double, Integer>(distance, distances.indexOf(distance)));
+        }
 
-
+        return distancesIndices.subList(0, kParameter);
+    }
 
     private double calculateSimilarity(FeatureVector ft1, FeatureVector ft2){
         return new EuclideanDistance().compute(ft1.getFeatureVectorNormalized(),ft2.getFeatureVectorNormalized());

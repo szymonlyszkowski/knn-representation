@@ -10,12 +10,23 @@ import java.util.List;
  */
 public class FeatureVector {
 
-    private double [] featureVector;
+    private double[] featureVector;
     private double[] featureVectorNormalized;
+    private int userRating;
 
     public FeatureVector(List<Double> data){
+        featureVector = new double[data.size()];
+        featureVectorNormalized = new double[data.size()];
         featureVector = ArrayUtils.toPrimitive(getFeatureArray(data));
         featureVectorNormalized = MathArrays.normalizeArray(featureVector, 1);
+    }
+
+    public FeatureVector(List<Double> data, int userRating) {
+        featureVector = new double[data.size()];
+        featureVectorNormalized = new double[data.size()];
+        featureVector = ArrayUtils.toPrimitive(getFeatureArray(data));
+        featureVectorNormalized = MathArrays.normalizeArray(featureVector, 1);
+        this.userRating = userRating;
     }
 
     private Double[] getFeatureArray(List<Double> featureData){

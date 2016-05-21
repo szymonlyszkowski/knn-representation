@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class Movie {
     private float userRating;
     private float voteAverage;
     private String status;
+    public int userRate;
 
     public Movie() {
     }
@@ -40,6 +42,26 @@ public class Movie {
         this.tagline = tagline;
         this.status = status;
         this.voteAverage = voteAverage;
+    }
+
+    public Movie(int id, String title, float popularity, String releaseDate, boolean adult, long budget, List<String>
+            genres, List<String> productionCompanies, long revenue, int runtime, float userRating, String tagline,
+            String status, float voteAverage, int userRate) {
+        this.id = id;
+        this.title = title;
+        this.popularity = popularity;
+        this.releaseDate = releaseDate;
+        this.adult = adult;
+        this.budget = budget;
+        this.genres = genres;
+        this.productionCompanies = productionCompanies;
+        this.revenue = revenue;
+        this.runtime = runtime;
+        this.userRating = userRating;
+        this.tagline = tagline;
+        this.status = status;
+        this.voteAverage = voteAverage;
+        this.userRate = userRate;
     }
 
     public int getId() {
@@ -136,6 +158,18 @@ public class Movie {
             if(i+1 < productionCompanies.size()) tmp+=":";
         }
         return tmp;
+    }
+
+    public List<Double> getFeatureData(){
+        Integer YEAR_INDEX = 0;
+        List<Double> data = new ArrayList();
+        data.add((double) popularity);
+        data.add((double) budget);
+        data.add((double)runtime);
+//        data.add((double) revenue);
+        data.add((double) voteAverage);
+        data.add(Double.parseDouble(releaseDate.split("-")[YEAR_INDEX]));
+        return data;
     }
 
 }
