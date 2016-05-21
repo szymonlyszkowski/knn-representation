@@ -3,7 +3,9 @@ import knn.UserPredictor;
 import knn.VectorSimilarity;
 import model.Movie;
 import model.Rate;
+import parser.GenerateSubmission;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +20,9 @@ public class Main {
     List<Rate> trainingList;
     List<Rate> taskList;
 
-    public static void main(String []args){
-        new Main().createSolution();
-
+    public static void main(String []args) throws IOException {
+        List<Double> solution = new Main().createSolution();
+        new GenerateSubmission().generate(solution);
 
     }
 
@@ -54,14 +56,14 @@ public class Main {
         return moviesKeyId;
     }
 
-    public void createSolution(){
+    public List<Double> createSolution(){
         CSVLoader csvLoader = new CSVLoader();
         movieList = csvLoader.getMovieModel();
         trainingList = csvLoader.getRateTrainModel();
         taskList = csvLoader.getRateModel();
 
         Map<Integer, Movie> moviesMap = getMoviesMap(movieList);
-
+        List<Double> predictions=new ArrayList();
         for(Rate rate: taskList){
             Map<Integer, Movie> moviesRatedByGivenUser = getMoviesRatedByGivenUser(rate.getAccountId(), trainingList,
                     moviesMap);
@@ -69,11 +71,12 @@ public class Main {
             List<FeatureVector> featureVectorSet = createFeatureVectorSet(moviesRatedByUser);
             VectorSimilarity vectorSimilarity = new VectorSimilarity(featureVectorSet);
             final List<FeatureVector> neighbours = vectorSimilarity
-                    .returnFeatureVectorsUsedByKNN(5, new FeatureVector(moviesMap.get(rate.getMovieId()).getFeatureData()));
+                    .returnFeatureVectorsUsedByKNN(5, new FeatureVector(moviesMap.get(rate.getAccountId()).getFeatureData()));
             Double predictedValue = new UserPredictor(neighbours).predictRate();
+            predictions.add(predictedValue);
         }
 
-
+        return predictions;
     }
 
     public void runApp(){
