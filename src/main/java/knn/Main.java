@@ -1,6 +1,5 @@
-import knn.FeatureVector;
-import knn.UserPredictor;
-import knn.VectorSimilarity;
+package knn;
+
 import model.Movie;
 import model.Rate;
 import parser.GenerateSubmission;
@@ -34,7 +33,7 @@ public class Main {
        return vector;
     }
 
-    private Map<Integer,Movie> getMoviesRatedByGivenUser(Integer userId, List<Rate> trainingRates, Map<Integer,Movie> moviesMap){
+    public Map<Integer,Movie> getMoviesRatedByGivenUser(Integer userId, List<Rate> trainingRates, Map<Integer,Movie> moviesMap){
         Map<Integer,Movie> userRatedMovies = new HashMap<Integer, Movie>();
         for (Rate rate: trainingRates)
             if (rate.getAccountId() == userId) {
@@ -48,7 +47,7 @@ public class Main {
         return userRatedMovies;
     }
 
-    private Map getMoviesMap(List<Movie> movies){
+    public Map getMoviesMap(List<Movie> movies){
         HashMap<Integer, Movie> moviesKeyId = new HashMap<Integer, Movie>();
         for(Movie movie: movies){
             moviesKeyId.put(movie.getId(),movie);

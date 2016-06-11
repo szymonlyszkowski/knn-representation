@@ -37,7 +37,7 @@ public class VectorSimilarity {
         Collections.sort(distances);
         List<Pair<Double,Integer>>distancesIndices = new ArrayList<Pair<Double,Integer>>();
         for(Double distance: distances){
-          distancesIndices.add(new ImmutablePair<Double, Integer>(distance, distances.indexOf(distance)));
+          distancesIndices.add(new ImmutablePair(distance, distances.indexOf(distance)));
         }
 
         return distancesIndices.subList(0, kParameter);

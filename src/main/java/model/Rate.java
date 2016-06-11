@@ -17,6 +17,8 @@ public class Rate {
         this.rate = rate;
     }
 
+    public Rate(){}
+
     public int getId() {
         return id;
     }
@@ -47,6 +49,10 @@ public class Rate {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    public boolean equals(Rate obj) {
+        return  movieId==obj.movieId && rate == obj.rate;
     }
 
     @Override

@@ -1,3 +1,5 @@
+package knn;
+
 import model.Movie;
 import model.Rate;
 
@@ -16,9 +18,9 @@ public class CSVLoader {
 
 
     public CSVLoader(){
-        parseFile(getClass().getResource("data.csv").getPath(), 1);
-        parseFile(getClass().getResource("train.csv").getPath(), 2);
-        parseFile(getClass().getResource("task.csv").getPath(), 0);
+        parseFile(getClass().getResource("../data.csv").getPath(), 1);
+        parseFile(getClass().getResource("../train.csv").getPath(), 2);
+        parseFile(getClass().getResource("../task.csv").getPath(), 0);
     }
 
     private void parseFile(String fileName, int type) {
